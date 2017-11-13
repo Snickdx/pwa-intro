@@ -1,0 +1,32 @@
+[
+            {
+                "title":"Jammer's Ball",
+                "date": "1st Feb, 2018",
+                "time": "10:34PM"
+            },
+            {
+                "title":"Code Sprint",
+                "date": "21st Feb, 2018",
+                "time": "7:00PM"
+            },
+            {
+                "title":"Hakka for Hackers",
+                "date": "27th Mar, 2018",
+                "time": "7:00PM"
+            },
+            {
+                "title":"Kotlin Kode Kings",
+                "date": "4th Apr, 2018",
+                "time": "4:00PM"
+            },
+            {
+                "title":"Getting by with AI",
+                "date": "16th Apr, 2018",
+                "time": "6:00PM"
+            },
+            {
+                "title":"Roses are Redis",
+                "date": "4th May, 2018",
+                "time": "5:00PM"
+            }
+        ]
