@@ -28,7 +28,7 @@ workboxSW.precache([
   },
   {
     "url": "index.html",
-    "revision": "b3deb65ce5c2162b5abda1aa7971cb3c"
+    "revision": "554ed6d16f64269f76304623044beee0"
   },
   {
     "url": "lib/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2",
@@ -48,15 +48,15 @@ workboxSW.precache([
   },
   {
     "url": "main.css",
-    "revision": "0d33e0b65de991c0d0d9af23942284bd"
+    "revision": "7be48897b62e2b6ddcbe5741a17427c9"
   },
   {
     "url": "main.js",
-    "revision": "7ea0719a759c75610b99e5b6692ba985"
+    "revision": "698c478eb8943a15a42cfb48015a1486"
   },
   {
     "url": "manifest.json",
-    "revision": "991a49da086a635583c1798288a9c98c"
+    "revision": "ad75db90b23de71c16eae63c9f0ac659"
   },
   {
     "url": "offline.html",
@@ -64,11 +64,11 @@ workboxSW.precache([
   },
   {
     "url": "sw-src.js",
-    "revision": "824c62fe423866fc5b237ac3c367f76e"
+    "revision": "89e6bd7ca8da80c2d997a1d33cc3dd2c"
   },
   {
     "url": "sw.js",
-    "revision": "366e786a937e4fd8241f3abf2fd33f47"
+    "revision": "08a98b48bc35d2908cbfa4869bb620af"
   },
   {
     "url": "workbox-sw.prod.v2.1.1.js",
@@ -113,7 +113,7 @@ var jamEventHandler = workboxSW.strategies.networkFirst({
   }
 });
 
-workboxSW.router.registerRoute('https://pwa-snickdx.c9users.io/api/events.json', args => {
+workboxSW.router.registerRoute('https://pwa-snickdx.c9users.io:8081/events', args => {
   return jamEventHandler.handle(args).then(response => {
     if (!response) {
       return caches.match('pages/offline.html');
@@ -135,3 +135,14 @@ workboxSW.router.registerRoute('https://pwa-snickdx.c9users.io/api/events.json',
 
 // const router = new workbox.routing.Router();
 // router.registerRoute({route});
+
+let fun = ()=>{
+  console.log("idk why they give me control here and not in the actual damn app.");
+}
+
+self.addEventListener('sync', function(event) {
+  console.log("general sync event fired");
+  if (event.tag == 'eventSync') {
+    event.waitUntil(fun());
+  }
+});

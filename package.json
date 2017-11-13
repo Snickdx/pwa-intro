@@ -5,11 +5,13 @@
   "main": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "workbox inject:manifest"
+    "build": "workbox inject:manifest",
+    "app": "json-server --watch api/events.json --port 8081 --static ./src"
   },
   "author": "Snickdx",
   "license": "ISC",
   "devDependencies": {
+    "json-server": "^0.12.1",
     "workbox-cli": "^2.1.1"
   }
 }

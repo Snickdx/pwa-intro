@@ -4,7 +4,7 @@
   "name": "Jammers Cal - PWA Starter",
   "scope": ".",
   "display": "fullscreen",
-  "start_url": "https://pwa-snickdx.c9users.io/src/index.html",
+  "start_url": "index.html",
   "short_name": "Jammers Cal",
   "theme_color": "#00bcd4",
   "description": "Jammers Cal is a PWA Starter application",

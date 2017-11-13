@@ -36,7 +36,7 @@ var jamEventHandler = workboxSW.strategies.networkFirst({
   }
 });
 
-workboxSW.router.registerRoute('https://pwa-snickdx.c9users.io/api/events.json', args => {
+workboxSW.router.registerRoute('https://pwa-snickdx.c9users.io:8081/events', args => {
   return jamEventHandler.handle(args).then(response => {
     if (!response) {
       return caches.match('pages/offline.html');
@@ -58,3 +58,14 @@ workboxSW.router.registerRoute('https://pwa-snickdx.c9users.io/api/events.json',
 
 // const router = new workbox.routing.Router();
 // router.registerRoute({route});
+
+let fun = ()=>{
+  console.log("idk why they give me control here and not in the actual damn app.");
+}
+
+self.addEventListener('sync', function(event) {
+  console.log("general sync event fired");
+  if (event.tag == 'eventSync') {
+    event.waitUntil(fun());
+  }
+});

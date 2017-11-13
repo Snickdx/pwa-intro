@@ -1,5 +1,5 @@
 //Just some html for a card, ${this.title}, ${this.date}, ${this.tme} place holder for variables
-const CardTemplate = '<div class="mdl-cell mdl-cell--1-col demo-card-event mdl-card mdl-shadow--2dp">\
+const CardTemplate = '<div class="mdl-cell mdl-cell--4-col  mdl-cell--12-col-phone md-cell--6-tablet demo-card-event mdl-card mdl-shadow--2dp">\
                         <div class="mdl-card__title mdl-card--expand">\
                         <h4>\
                           ${this.title}:<br>\
@@ -33,6 +33,17 @@ let ajaxGet = url => {
   });
 }
 
+let ajaxPost = (url, data) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onload = () => resolve(xhr.responseText);
+    xhr.onerror = () => reject(xhr.statusText);
+    xhr.send(JSON.stringify(data));
+  });
+}
+
 //*****************************************************************************************
 
 //********* This doesn't really matter either there are libraries which can do this as well 
@@ -40,8 +51,14 @@ let ajaxGet = url => {
     //monitors network state
     let monitorNetworkState = (onlineHandler, offlineHandler)=>{
         window.addEventListener('load', function() {
-            window.addEventListener('online', event => onlineHandler());
-            window.addEventListener('offline', event => offlineHandler());
+            window.addEventListener('online', event =>{ 
+                if(navigator.onLine)
+                    onlineHandler(); 
+            });
+            window.addEventListener('offline', event => {
+                if(!navigator.onLine)
+                    offlineHandler()
+            });
         });
     }
 //******************************************************************************************
@@ -50,8 +67,10 @@ let ajaxGet = url => {
     
     let events = [];
     
+    const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
+    
     let offlineHandler = () => {
-        console.log("we offline");
+        console.log("App is offline");
         document.getElementById("status").innerHTML = "(Offline)";
         //if we have no data show offline msg otherwise do nothing
         if(events.length === 0) {
@@ -62,13 +81,11 @@ let ajaxGet = url => {
     
     let onlineHandler = async () => {
         
-        if(navigator.offline)throw "App is offline";
-        
-        console.log("we online hoss");
+        console.log("App is online");
         document.getElementById("status").innerHTML = "(Online)";
         
         //pull content
-        events = JSON.parse(await ajaxGet("https://pwa-snickdx.c9users.io/api/events.json"));
+        events = JSON.parse(await ajaxGet(eventEndpoint));
         
         document.getElementById("dynamic").innerHTML = "";
         
@@ -78,9 +95,16 @@ let ajaxGet = url => {
         })    
     }
     
+    let queue = [];
+    
     try {
         //should work if the app is visited from the browser
         onlineHandler();
+         navigator.serviceWorker.ready.then(reg => {
+          return reg.sync.register('eventSync').then(res=>{
+              console.log("ey?");
+          });
+        });
     }catch(e){
         //The app is probably opened from homescreen but device is offline
         console.log("Error maybe we offline", e);
@@ -89,5 +113,63 @@ let ajaxGet = url => {
         monitorNetworkState(onlineHandler, offlineHandler);
     }
     
+    var dialog = document.querySelector('dialog');
+    var showModalButton = document.querySelector('.show-modal');
     
+    if (! dialog.showModal) {
+        dialogPolyfill.registerDialog(dialog);
+    }
+    
+    showModalButton.addEventListener('click', () => {
+        dialog.showModal();
+    });
+    
+    dialog.querySelector('.close').addEventListener('click', () => {
+        dialog.close();
+    });
+    
+    dialog.querySelector('.add-event').addEventListener('click', async ()=>{
+      
+        let newevent = {
+            title: document.getElementById("title").value,
+            date: document.getElementById("date").value,
+            time: document.getElementById("time").value
+        };
+        
+        if(newevent.title == "" || newevent.date == "" && newevent.time == ""){
+            alert("Fields cant be blank!");
+        }else{
+            try{
+                let res = await ajaxPost(eventEndpoint, newevent);
+                onlineHandler();
+            }catch(e){
+                console.log("error prob offline");
+                
+                queue.push(newevent);
+                
+                if(queue.length == 1){
+                    console.log("first event added to queue, setting up sync")
+                   
+                }
+                
+            }finally{
+                dialog.close();
+            }
+        }
+        
+        
+    });
+    
+    let syncHandler = async ()=>{
+            console.log("back online sending out requests");
+         
+            queue.forEach(async newevent => {
+                await ajaxPost(eventEndpoint, newevent);
+            })
+            
+            queue = [];
+            
+            onlineHandler();
+     };
+                      
 })()
