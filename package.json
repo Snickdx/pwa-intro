@@ -5,7 +5,7 @@
   "main": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "workbox generate:sw"
+    "build": "workbox inject:manifest"
   },
   "author": "Snickdx",
   "license": "ISC",
