@@ -19,10 +19,10 @@ const CardTemplate = '<div class="mdl-cell mdl-cell--1-col demo-card-event mdl-c
 
 //** these don't really matter, whatever UI library you use would do this differently ***
 
-//template binding
-let makeHTML = (data, template) => new Function("return `"+template+"`;").call(data);
+//template binding, templating a template so we can reuse it
+let makeHTML = (data, template) => new Function(`return \`${template}\`;`).call(data);
 
-//ajax
+//ajax wrapped in a promise
 let ajaxGet = url => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -39,7 +39,6 @@ let ajaxGet = url => {
 
     //monitors network state
     let monitorNetworkState = (onlineHandler, offlineHandler)=>{
-        
         window.addEventListener('load', function() {
             window.addEventListener('online', event => onlineHandler());
             window.addEventListener('offline', event => offlineHandler());
