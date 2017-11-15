@@ -68,4 +68,7 @@ self.addEventListener('sync', function(event) {
   if (event.tag == 'eventSync') {
     event.waitUntil(fun());
   }
+  if (event.tag == 'test-sync') {
+    event.waitUntil(fun());
+  }
 });

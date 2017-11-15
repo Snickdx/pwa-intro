@@ -7,6 +7,10 @@ workboxSW.precache([
     "revision": "56a524cef205f3a3a6e143654054a1d4"
   },
   {
+    "url": "dialog.js",
+    "revision": "c82c7922932169c88e356d0fbf071bd2"
+  },
+  {
     "url": "images/android-desktop.png",
     "revision": "60aa56f0b069c8446c3a2857978a2724"
   },
@@ -28,7 +32,11 @@ workboxSW.precache([
   },
   {
     "url": "index.html",
-    "revision": "554ed6d16f64269f76304623044beee0"
+    "revision": "23ddfe4979f6c221ce41869980496a0b"
+  },
+  {
+    "url": "lib.js",
+    "revision": "17a6888f58005ea994c715ee721d8d65"
   },
   {
     "url": "lib/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2",
@@ -48,15 +56,15 @@ workboxSW.precache([
   },
   {
     "url": "main.css",
-    "revision": "7be48897b62e2b6ddcbe5741a17427c9"
+    "revision": "9620fac35cd72cc40e88aa6d0bb99521"
   },
   {
     "url": "main.js",
-    "revision": "698c478eb8943a15a42cfb48015a1486"
+    "revision": "d2df4a1b1aae5f2db44ac17f607f1bb0"
   },
   {
     "url": "manifest.json",
-    "revision": "ad75db90b23de71c16eae63c9f0ac659"
+    "revision": "941a0b7ee3590ca0496f908cba8a39f0"
   },
   {
     "url": "offline.html",
@@ -64,11 +72,11 @@ workboxSW.precache([
   },
   {
     "url": "sw-src.js",
-    "revision": "89e6bd7ca8da80c2d997a1d33cc3dd2c"
+    "revision": "d2b3df0d3ea6b223ccb068d82f9c03eb"
   },
   {
     "url": "sw.js",
-    "revision": "08a98b48bc35d2908cbfa4869bb620af"
+    "revision": "abb0a0c3fb0a24afff6702eaf41668a9"
   },
   {
     "url": "workbox-sw.prod.v2.1.1.js",
@@ -143,6 +151,9 @@ let fun = ()=>{
 self.addEventListener('sync', function(event) {
   console.log("general sync event fired");
   if (event.tag == 'eventSync') {
+    event.waitUntil(fun());
+  }
+  if (event.tag == 'test-sync') {
     event.waitUntil(fun());
   }
 });

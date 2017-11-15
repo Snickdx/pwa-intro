@@ -1,16 +1,13 @@
 {
-  "dir": "ltr",
-  "lang": "en",
-  "name": "Jammers Cal - PWA Starter",
+  "name": "Jammers Calendar",
   "scope": ".",
   "display": "fullscreen",
   "start_url": "index.html",
   "short_name": "Jammers Cal",
   "theme_color": "#00bcd4",
+  "orientation": "portrait",
   "description": "Jammers Cal is a PWA Starter application",
   "background_color": "#424242",
-  "related_applications": [],
-  "prefer_related_applications": false,
   "icons": [
     {
       "src": "images/favicon.png",
