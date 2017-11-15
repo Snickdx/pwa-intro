@@ -1,11 +1,10 @@
 {
   "name": "Jammers Calendar",
   "scope": ".",
-  "display": "fullscreen",
+  "display": "standalone",
   "start_url": "index.html",
   "short_name": "Jammers Cal",
   "theme_color": "#00bcd4",
-  "orientation": "portrait",
   "description": "Jammers Cal is a PWA Starter application",
   "background_color": "#424242",
   "icons": [
@@ -23,6 +22,11 @@
       "src": "images/ios-desktop.png",
       "type": "image/png",
       "sizes": "120x120"
+    },
+      {
+      "src": "images/512-logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ]
 }

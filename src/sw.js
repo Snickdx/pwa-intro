@@ -11,6 +11,10 @@ workboxSW.precache([
     "revision": "c82c7922932169c88e356d0fbf071bd2"
   },
   {
+    "url": "images/512-logo.png",
+    "revision": "337e1d8c670bc32bba08b8fdbdac6a85"
+  },
+  {
     "url": "images/android-desktop.png",
     "revision": "60aa56f0b069c8446c3a2857978a2724"
   },
@@ -32,7 +36,7 @@ workboxSW.precache([
   },
   {
     "url": "index.html",
-    "revision": "23ddfe4979f6c221ce41869980496a0b"
+    "revision": "d997aefa0803bea4efb528c0b85be163"
   },
   {
     "url": "lib.js",
@@ -64,7 +68,7 @@ workboxSW.precache([
   },
   {
     "url": "manifest.json",
-    "revision": "941a0b7ee3590ca0496f908cba8a39f0"
+    "revision": "bec9d3c151cbacb65925fdddf805756f"
   },
   {
     "url": "offline.html",
@@ -76,7 +80,7 @@ workboxSW.precache([
   },
   {
     "url": "sw.js",
-    "revision": "abb0a0c3fb0a24afff6702eaf41668a9"
+    "revision": "4309f944838381620706366833e35808"
   },
   {
     "url": "workbox-sw.prod.v2.1.1.js",
