@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "wb-build": "workbox inject:manifest",
     "build": "gulp generate-service-worker",
-    "app": "json-server --watch api/db.json --port 8081 --static ./app"
+    "app": "json-server --watch api/db.json --port 8081 --static ./app-completed"
   },
   "author": "Snickdx",
   "license": "ISC",
