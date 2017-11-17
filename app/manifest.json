@@ -1,7 +1,7 @@
 {
   "name": "Jammers Calendar",
   "scope": ".",
-  "display": "standalone",
+  "display": "fullscreen",
   "start_url": "index.html",
   "short_name": "Jammers Cal",
   "theme_color": "#00bcd4",

@@ -14,7 +14,7 @@ gulp.task('generate-service-worker', function(callback) {
 			'enableFcm.js',
 		],
 		runtimeCaching: [{
-			urlPattern: /^http:\/\/localhost:8081\/events/,
+			urlPattern: /^https:\/\/pwa-snickdx\.c9users\.io:8081\/events/,
 			handler: 'networkFirst'
 		}]
 	}, callback);

@@ -41,9 +41,9 @@
 	let messaging = fb.messaging();
 	let msgToken = null;
 	
-	// const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
-	const eventEndpoint = "http://localhost:8081/events";
-	const tokenEndpoint = "http://localhost:8081/tokens";
+	// const eventEndpoint = "http://localhost:8081/events";
+	const tokenEndpoint = "https://pwa-snickdx.c9users.io:8081/tokens";
+	const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
 	
 	let offlineMode = () => {
 		console.log("App is offline");
