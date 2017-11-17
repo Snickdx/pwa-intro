@@ -41,24 +41,8 @@
       "date": "10th May, 2018",
       "time": "2:00PM",
       "id": 7
-    },
-    {
-      "title": "new event",
-      "date": "someday",
-      "time": "sometime",
-      "id": 8
-    },
-    {
-      "title": "lol",
-      "date": "tet",
-      "time": "test2",
-      "id": 9
-    },
-    {
-      "title": "lol",
-      "date": "lol",
-      "time": "lol",
-      "id": 10
     }
+  ],
+  "tokens": [
   ]
 }
