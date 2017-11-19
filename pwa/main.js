@@ -1,4 +1,9 @@
-(async ()=>{
+//TODO: Web Share
+//TODO: Pull events from google cal
+//TODO: Add event to calendar
+//TODO: Notifications for new events
+
+{
 	
 	//Just some html for a card, ${this.title}, ${this.date}, ${this.tme} place holder for variables
 	const CardTemplate =`
@@ -33,20 +38,24 @@
 			});
 		}
 	};
-	
-	
 	let events = [];
-	
 	let fb = firebase.initializeApp(config);
 	let messaging = fb.messaging();
 	let msgToken = null;
+	let db = Lib.initDB('EventQueue', {events: 'title, date, time'});
 	
+	let network = "online";
+	let syncRegistered = false;
+	
+	//use these local endpoints if the other ones aren't available
 	// const eventEndpoint = "http://localhost:8081/events";
+	// const eventEndpoint = "http://localhost:8081/tokens";
 	const tokenEndpoint = "https://pwa-snickdx.c9users.io:8081/tokens";
 	const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
 	
 	let offlineMode = () => {
 		console.log("App is offline");
+		network = "offline";
 		document.getElementById("status").innerHTML = "(Offline)";
 		//if we have no data show offline msg otherwise do nothing
 		if(events.length === 0) {
@@ -55,12 +64,14 @@
 		}
 	};
 	
-	
-	
-	let loadDisplayEvents = async () => {
-		
+	let onlineMode = ()=>{
 		console.log("App is online");
 		document.getElementById("status").innerHTML = "(Online)";
+		network = "online";
+		loadDisplayEvents();
+	};
+	
+	let loadDisplayEvents = async () => {
 		
 		//pull content
 		events = JSON.parse(await Lib.ajaxGet(eventEndpoint));
@@ -80,29 +91,46 @@
 		//The app is probably opened from homescreen but device is offline
 		console.log("Error maybe we offline", e);
 	}finally{
-		Lib.monitorNetworkState(loadDisplayEvents, offlineMode);
+		Lib.monitorNetworkState(onlineMode, offlineMode);
 	}
 	
-	document.querySelector("#notifications").onclick = (event) => {
-		let element = event.target || event.srcElement;
-		if(element.checked){
+	document.querySelector("#notifications").onclick = () => {
+		if(!msgToken){
 			messaging.requestPermission()
 				.then(async function() {
 					msgToken = await messaging.getToken();
 					Lib.ajaxPost(tokenEndpoint, {"token": msgToken});
-					console.log('Notification permission granted.');
+					console.log('Notification permission granted', msgToken);
+					document.querySelector('#notifications').MaterialSwitch.on();
 					
 				})
 				.catch(function(err) {
 					console.log('Unable to get permission to notify.', err);
 				});
 		}else{
-			console.log("Deleteing token", msgToken);
-			messaging.deleteToken(msgToken);
+			// console.log("Deleteing token", msgToken);
+			// messaging.deleteToken(msgToken);
+			// document.querySelector('#notifications').MaterialSwitch.off();
+			// msgToken = null;
 		}
 		
 	};
 	
+	//Enable Dialog
+	let eventDialog = new Dialog(".show-modal", async newevent=>{
+		if(network === "offline"){
+			console.log("app is offline queueing event");
+			alert("App is offline, we'll notify you when the event is created");
+			let reg = await navigator.serviceWorker.ready;
+			db.events.add(newevent);
+			reg.sync.register('EventSync');
+		}else{
+			await Lib.ajaxPost(eventEndpoint, newevent);
+			loadDisplayEvents();
+		}
+	});
+	
+	eventDialog.enableListeners();
 	
 	//registers the service worker
 	registerSW(async reg=>{
@@ -110,14 +138,18 @@
 		
 		messaging.useServiceWorker(reg);
 		
+		messaging.onMessage(function(payload) {
+			console.log("Message received. ", payload);
+		});
+		
 		msgToken = await messaging.getToken();
-		// if(msgToken !== null)document.querySelector("#notificationsParent").click();
-		// if(msgToken !== null)document.querySelector("#notifications").setAttribute("checked", "");
+		if(msgToken !== null){
+			console.log("flipping switch");
+			document.querySelector('#notifications').MaterialSwitch.on();
+		}
 		console.log("notifications enabled: ", msgToken !== null, msgToken);
 		
-		
-		
-	});
-})()//wrap all js code into an anonymous function and call it, keeps everything out of the global scope
+	})
+}// keeps everything out of the global scope
 
 

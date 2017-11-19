@@ -57,18 +57,18 @@
 
         </div>
     </header>
-    <div class="mdl-layout__drawer">
-        <span class="mdl-layout-title">Menu</span>
-    </div>
+
     <main class="mdl-layout__content">
         <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
             <div class="page-content">
 
                 <div class="mdl-grid">
-                    <label id="notificationsParent" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="notifications">
-                        <input type="checkbox" id="notifications" class="mdl-switch__input">
-                        <span class="mdl-switch__label title mdl-color-text--white">Notifications</span>
-                    </label>
+                    <div class="mdl-cell mdl-cell--4-col  mdl-cell--middle">
+                        <label id="notifications" class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="notifications">
+                            <input type="checkbox"  class="mdl-switch__input">
+                            <span class="mdl-switch__label title mdl-color-text--white">Notifications</span>
+                        </label>
+                    </div>
                 </div>
 
 
@@ -116,9 +116,10 @@
 
 <script src="key.js"></script>
 <script src="lib/firebase.js"></script>
+<script src="lib/dexie.js"></script>
 <script src="lib/lib.js"></script>
-<script src="main.js"></script>
 <script src="dialog.js"></script>
+<script src="main.js"></script>
 <script src="lib/material.min.js"></script>
 </body>
 </html>

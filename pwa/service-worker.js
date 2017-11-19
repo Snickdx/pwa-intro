@@ -37,7 +37,7 @@
 /* eslint-disable indent, no-unused-vars, no-multiple-empty-lines, max-nested-callbacks, space-before-function-paren, quotes, comma-spacing */
 'use strict';
 
-var precacheConfig = [["/dialog.js","1d6acf6071e907067fbaceb1abeb38a4"],["/enableFcm.js","0a77f9a3c0686e1daa4df13d55f4bb77"],["/images/512-logo.png","337e1d8c670bc32bba08b8fdbdac6a85"],["/images/android-desktop.png","60aa56f0b069c8446c3a2857978a2724"],["/images/favicon.png","680eaca6af54de743d08b413ebb4c4b9"],["/images/ios-desktop.png","a2cdce82ff3e7af9a0abcd242d3f2ec7"],["/index.html","227442b814916dfac4186bb7820b07e7"],["/key.js","dfe6e50fb2ac581dfba2e74a7277d53d"],["/lib/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2","028d9900edc4539c71febbba998c9a8c"],["/lib/firebase.js","8e3e261ce734b6349aa477685ad9ef25"],["/lib/fonts.css","b9ffd1470ae3a31ff0600c57a274a56f"],["/lib/lib.js","8c3561dd1cd2760b3f0ad410d9b3cafa"],["/lib/material.cyan-light_blue.min.css","921f0b910d1f2e21eecf424f072613ca"],["/lib/material.min.js","e00d1a118138a17cbdbdf58c869f9730"],["/main.css","74d0852f21c1fa0b4f216240453e905b"],["/main.js","a91917abc6b2703e79d76d257e286f57"],["/manifest.json","e62867a022bdd6be28e928ad144f490c"]];
+var precacheConfig = [["/dialog.js","a91890c984b1692bd45ec1b56e2b4c2d"],["/images/512-logo.png","337e1d8c670bc32bba08b8fdbdac6a85"],["/images/android-desktop.png","60aa56f0b069c8446c3a2857978a2724"],["/images/cal.png","0c48872cf9b9504e726f98d000d03063"],["/images/favicon.png","680eaca6af54de743d08b413ebb4c4b9"],["/images/ios-desktop.png","a2cdce82ff3e7af9a0abcd242d3f2ec7"],["/index.html","5f0b764318b05b4c90e2708dc8aa2330"],["/key.js","dfe6e50fb2ac581dfba2e74a7277d53d"],["/lib/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2","028d9900edc4539c71febbba998c9a8c"],["/lib/dexie.js","81f6b0173faaab2868cfedbc951b1a22"],["/lib/firebase.js","bc4d476bb821aea3ae43771a36e00dc6"],["/lib/fonts.css","b9ffd1470ae3a31ff0600c57a274a56f"],["/lib/lib.js","494b8230eb8d1c7a7135651bf58cad45"],["/lib/material.cyan-light_blue.min.css","921f0b910d1f2e21eecf424f072613ca"],["/lib/material.min.js","e00d1a118138a17cbdbdf58c869f9730"],["/main.css","74d0852f21c1fa0b4f216240453e905b"],["/main.js","0bf09cbe3d297e3869132b71c2e0292b"],["/manifest.json","e62867a022bdd6be28e928ad144f490c"],["/sw.js","d71ca84f52a591cc49cd19ec1d700352"]];
 var cacheName = 'sw-precache-v3--' + (self.registration ? self.registration.scope : '');
 
 
@@ -290,5 +290,5 @@ toolbox.router.get(/^https:\/\/pwa-snickdx\.c9users\.io:8081\/events/, toolbox.n
 
 
 
-importScripts("key.js","lib/firebase.js","enableFcm.js");
+importScripts("key.js","lib/firebase.js","lib/dexie.js","lib/lib.js","sw.js");
 
