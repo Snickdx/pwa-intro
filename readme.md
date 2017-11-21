@@ -22,7 +22,7 @@
 
 ## Running
 1. Add firebase config to key.js
-2. run ```$ npm build ```
+2. run ```$ npm run build ```
 3. then run ```$ npm run app```
 
 ## Using Postman
