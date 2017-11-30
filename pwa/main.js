@@ -18,6 +18,9 @@
         </div>
     `;
 	
+	// const swFile = 'wb-sw.js'; //workbox cli service worker : (npm run wb-buld)
+	const swFile = 'service-worker.js'; // sw-precache's service worker: (npm run build)
+	
 	let registerSW = async (readyFun) =>{
 		if ('serviceWorker' in navigator) {
 			window.addEventListener('load',async () => {
@@ -26,7 +29,7 @@
 					let reg = await navigator.serviceWorker.getRegistration(".");
 					readyFun(reg);
 				} else {
-					navigator.serviceWorker.register('service-worker.js', {scope: '.'})
+					navigator.serviceWorker.register(swFile, {scope: '.'})
 						.then(reg=>{
 							console.log('Service worker has been registered for scope:'+ reg.scope);
 							readyFun(reg);
@@ -47,11 +50,11 @@
 	let network = "online";
 	let syncRegistered = false;
 	
-	//use these local endpoints if the other ones aren't available
+	//to use local enpoints un comment this and run "npm run local-server"
 	// const eventEndpoint = "http://localhost:8081/events";
 	// const eventEndpoint = "http://localhost:8081/tokens";
-	const tokenEndpoint = "https://pwa-snickdx.c9users.io:8081/tokens";
-	const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
+	const tokenEndpoint = "https://snickdx.me:3001/tokens";
+	const eventEndpoint = "https://snickdx.me:3001/events";
 	
 	let offlineMode = () => {
 		console.log("App is offline");

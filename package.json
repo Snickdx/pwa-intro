@@ -1,22 +1,23 @@
 {
-  "name": "jammers-pwa",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.html",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "wb-build": "workbox inject:manifest",
-    "build": "gulp generate-service-worker",
-    "app": "json-server --watch api/db.json --port 8081 --static ./pwa"
-  },
-  "author": "Snickdx",
-  "license": "ISC",
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "json-server": "^0.12.1"
-  },
-  "dependencies": {
-    "path": "^0.12.7",
-    "sw-precache": "^5.2.0"
-  }
+	"name": "jammers-pwa",
+	"version": "1.0.0",
+	"description": "",
+	"main": "src/index.html",
+	"scripts": {
+		"wb-build": "workbox-cli generate:sw",
+		"build": "gulp generate-service-worker",
+		"local-server": "json-server --watch api/db.json --port 8081",
+		"start": "live-server --open=pwa"
+	},
+	"author": "Snickdx",
+	"license": "ISC",
+	"devDependencies": {
+		"gulp": "^3.9.1",
+		"json-server": "^0.12.1",
+		"live-server": "^1.2.0"
+	},
+	"dependencies": {
+		"path": "^0.12.7",
+		"sw-precache": "^5.2.0"
+	}
 }
