@@ -1,82 +1,21 @@
-importScripts('workbox-sw.prod.v2.1.0.js');
+// importScripts('workbox-sw.dev.v2.1.2.js');
+importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.prod.v2.1.2.js');
 
-/**
- * DO NOT EDIT THE FILE MANIFEST ENTRY
- *
- * The method precache() does the following:
- * 1. Cache URLs in the manifest to a local cache.
- * 2. When a network request is made for any of these URLs the response
- *    will ALWAYS comes from the cache, NEVER the network.
- * 3. When the service worker changes ONLY assets with a revision change are
- *    updated, old cache entries are left as is.
- *
- * By changing the file manifest manually, your users may end up not receiving
- * new versions of files because the revision hasn't changed.
- *
- * Please use workbox-build or some other tool / approach to generate the file
- * manifest which accounts for changes to local files and update the revision
- * accordingly.
- */
-const fileManifest = [
+
+const workboxSW = new WorkboxSW();
+
+workboxSW.precache([
   {
     "url": "dialog.js",
     "revision": "a91890c984b1692bd45ec1b56e2b4c2d"
   },
   {
-    "url": "images/512-logo.png",
-    "revision": "337e1d8c670bc32bba08b8fdbdac6a85"
-  },
-  {
-    "url": "images/android-desktop.png",
-    "revision": "60aa56f0b069c8446c3a2857978a2724"
-  },
-  {
-    "url": "images/cal.png",
-    "revision": "0c48872cf9b9504e726f98d000d03063"
-  },
-  {
-    "url": "images/favicon.png",
-    "revision": "680eaca6af54de743d08b413ebb4c4b9"
-  },
-  {
-    "url": "images/ios-desktop.png",
-    "revision": "a2cdce82ff3e7af9a0abcd242d3f2ec7"
-  },
-  {
     "url": "index.html",
-    "revision": "5f0b764318b05b4c90e2708dc8aa2330"
+    "revision": "0bd7ce685d815b07a5315f78307fac29"
   },
   {
     "url": "key.js",
     "revision": "dfe6e50fb2ac581dfba2e74a7277d53d"
-  },
-  {
-    "url": "lib/2fcrYFNaTjcS6g4U3t-Y5ZjZjT5FdEJ140U2DJYC3mY.woff2",
-    "revision": "028d9900edc4539c71febbba998c9a8c"
-  },
-  {
-    "url": "lib/dexie.js",
-    "revision": "81f6b0173faaab2868cfedbc951b1a22"
-  },
-  {
-    "url": "lib/firebase.js",
-    "revision": "bc4d476bb821aea3ae43771a36e00dc6"
-  },
-  {
-    "url": "lib/fonts.css",
-    "revision": "b9ffd1470ae3a31ff0600c57a274a56f"
-  },
-  {
-    "url": "lib/lib.js",
-    "revision": "494b8230eb8d1c7a7135651bf58cad45"
-  },
-  {
-    "url": "lib/material.cyan-light_blue.min.css",
-    "revision": "921f0b910d1f2e21eecf424f072613ca"
-  },
-  {
-    "url": "lib/material.min.js",
-    "revision": "e00d1a118138a17cbdbdf58c869f9730"
   },
   {
     "url": "main.css",
@@ -84,7 +23,7 @@ const fileManifest = [
   },
   {
     "url": "main.js",
-    "revision": "51ef957ecaa0f683adc337523ccf18bf"
+    "revision": "631518c1651e848929c51ec18eff6c7a"
   },
   {
     "url": "manifest.json",
@@ -92,17 +31,59 @@ const fileManifest = [
   },
   {
     "url": "service-worker.js",
-    "revision": "2cb95b9598cc8fb12ea84bda0b836655"
+    "revision": "f2d1195e6954547d7464dbbf122b2771"
   },
   {
     "url": "sw-src.js",
-    "revision": "d41d8cd98f00b204e9800998ecf8427e"
+    "revision": "561ddeaa5073b8b671e36b98cce6b14c"
   },
   {
     "url": "sw.js",
     "revision": "d71ca84f52a591cc49cd19ec1d700352"
+  },
+  {
+    "url": "wb-sw.js",
+    "revision": "221ec3bf8fd0ae596ffa5a76d44ccaf5"
+  },
+  {
+    "url": "workbox-sw.dev.v2.1.2.js",
+    "revision": "acb8524aabe8c4222c32aed66f0f012a"
+  },
+  {
+    "url": "workbox-sw.prod.v2.1.0.js",
+    "revision": "e5f207838d7fd9c81835d5705a73cfa2"
+  },
+  {
+    "url": "workbox-sw.prod.v2.1.0.js.map",
+    "revision": "6fc68cbf40e4e2f38d2889fdaf5bc58a"
   }
-];
+]);
 
-const workboxSW = new self.WorkboxSW();
-workboxSW.precache(fileManifest);
+// Set up a route to match any requests made for URLs that end in .txt.
+// The requests are handled with a network-first strategy.
+// const route = new workbox.routing.RegExpRoute({
+// 	regExp: /^https:\/\/snickdx\.me:3001\/events/,
+// 	handler: new workbox.runtimeCaching.NetworkFirst(),
+// });
+
+// const router = new workbox.routing.Router();
+// router.registerRoute({route});
+
+
+workboxSW.router.registerRoute(
+	/^https:\/\/snickdx\.me:3001\/events/,
+	workboxSW.strategies.networkFirst()
+);
+
+
+workboxSW.router.registerRoute(/\.(?:png|gif|jpg)$/,
+	workboxSW.strategies.cacheFirst({
+		cacheName: 'images',
+		cacheExpiration: {
+			maxEntries: 50
+		}
+	})
+);
+
+
+

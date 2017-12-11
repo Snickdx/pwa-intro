@@ -18,8 +18,8 @@
         </div>
     `;
 	
-	// const swFile = 'wb-sw.js'; //workbox cli service worker : (npm run wb-buld)
-	const swFile = 'service-worker.js'; // sw-precache's service worker: (npm run build)
+	const swFile = 'wb-sw.js'; //workbox cli service worker : (npm run wb-buld)
+	// const swFile = 'service-worker.js'; // sw-precache's service worker: (npm run build)
 	
 	let registerSW = async (readyFun) =>{
 		if ('serviceWorker' in navigator) {
@@ -50,12 +50,14 @@
 	let network = "online";
 	let syncRegistered = false;
 	
-	//to use local enpoints un comment this and run "npm run local-server"
+	//to use local endpoints un comment this and run "npm run local-server"
 	// const eventEndpoint = "http://localhost:8081/events";
 	// const eventEndpoint = "http://localhost:8081/tokens";
+	
 	const tokenEndpoint = "https://snickdx.me:3001/tokens";
 	const eventEndpoint = "https://snickdx.me:3001/events";
 	
+	//encapsulate different behaviours depending on the network situation
 	let offlineMode = () => {
 		console.log("App is offline");
 		network = "offline";
@@ -89,11 +91,12 @@
 	
 	try {
 		//should work if the app is visited from the browser
-		loadDisplayEvents();
+		onlineMode();
 	}catch(e){
 		//The app is probably opened from homescreen but device is offline
 		console.log("Error maybe we offline", e);
 	}finally{
+		//choose how the app behaves depending on network status
 		Lib.monitorNetworkState(onlineMode, offlineMode);
 	}
 	
@@ -110,13 +113,12 @@
 				.catch(function(err) {
 					console.log('Unable to get permission to notify.', err);
 				});
-		}else{
+		}else {
 			// console.log("Deleteing token", msgToken);
 			// messaging.deleteToken(msgToken);
 			// document.querySelector('#notifications').MaterialSwitch.off();
 			// msgToken = null;
 		}
-		
 	};
 	
 	//Enable Dialog
@@ -150,7 +152,7 @@
 			console.log("flipping switch");
 			document.querySelector('#notifications').MaterialSwitch.on();
 		}
-		console.log("notifications enabled: ", msgToken !== null, msgToken);
+		// console.log("notifications enabled: ", msgToken !== null, msgToken);
 		
 	})
 }// keeps everything out of the global scope

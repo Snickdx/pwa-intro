@@ -1,4 +1,5 @@
-gulp = require('gulp');
+const gulp = require('gulp');
+const wbBuild = require('workbox-build');
 
 gulp.task('generate-service-worker', function(callback) {
 	var path = require('path');
@@ -16,9 +17,22 @@ gulp.task('generate-service-worker', function(callback) {
 			'sw.js',
 		],
 		runtimeCaching: [{
-			urlPattern: /^https:\/\/pwa-snickdx\.c9users\.io:8081\/events/,
+			urlPattern: /^https:\/\/snickdx\.me:3001\/events/,
 			handler: 'networkFirst'
 		}]
 	}, callback);
 });
 
+gulp.task('service-worker', () => {
+	return wbBuild.injectManifest({
+		swSrc: 'pwa/sw-src.js',
+		swDest: 'pwa/wb-sw.js',
+		globDirectory: 'pwa',
+		staticFileGlobs: [
+			'*'
+		]
+	})
+		.catch((err) => {
+			console.log('[ERROR] This happened: ' + err);
+		});
+});

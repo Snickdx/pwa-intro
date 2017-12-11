@@ -14,7 +14,9 @@
 	"devDependencies": {
 		"gulp": "^3.9.1",
 		"json-server": "^0.12.1",
-		"live-server": "^1.2.0"
+		"live-server": "^1.2.0",
+		"workbox-build": "^2.1.2",
+		"workbox-runtime-caching": "^2.0.3"
 	},
 	"dependencies": {
 		"path": "^0.12.7",
