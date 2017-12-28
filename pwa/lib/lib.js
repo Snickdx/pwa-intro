@@ -41,13 +41,17 @@
     
     static monitorNetworkState(onlineHandler, offlineHandler){
         window.addEventListener('load', function() {
-            window.addEventListener('online', event =>{ 
-                if(navigator.onLine)
-                    onlineHandler(); 
+        	window.addEventListener('online', event =>{
+                if(navigator.onLine){
+	                onlineHandler();
+	                // console.log("online");
+                }
             });
             window.addEventListener('offline', event => {
-                if(!navigator.onLine)
-                    offlineHandler()
+                if(!navigator.onLine){
+	                offlineHandler();
+	                // console.log("offline");
+                }
             });
         });
     }

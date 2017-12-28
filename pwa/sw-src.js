@@ -1,28 +1,19 @@
-// importScripts('workbox-sw.dev.v2.1.2.js');
-importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.prod.v2.1.2.js');
+importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
 
+const workboxSW = new WorkboxSW({clientsClaim: true});
 
-const workboxSW = new WorkboxSW();
 
 workboxSW.precache([]);
 
-// Set up a route to match any requests made for URLs that end in .txt.
-// The requests are handled with a network-first strategy.
-// const route = new workbox.routing.RegExpRoute({
-// 	regExp: /^https:\/\/snickdx\.me:3001\/events/,
-// 	handler: new workbox.runtimeCaching.NetworkFirst(),
-// });
-
-// const router = new workbox.routing.Router();
-// router.registerRoute({route});
-
-
+//caches an api request made by app
 workboxSW.router.registerRoute(
-	/^https:\/\/snickdx\.me:3001\/events/,
-	workboxSW.strategies.networkFirst()
+	'https://snickdx.me:3001/events',
+	workboxSW.strategies.cacheFirst({
+		cacheName:"eventsCache"
+	})
 );
 
-
+//caches any images that is loaded by the app
 workboxSW.router.registerRoute(/\.(?:png|gif|jpg)$/,
 	workboxSW.strategies.cacheFirst({
 		cacheName: 'images',

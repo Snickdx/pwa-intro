@@ -41,13 +41,13 @@
 			});
 		}
 	};
-	let events = [];
 	let fb = firebase.initializeApp(config);
 	let messaging = fb.messaging();
-	let msgToken = null;
 	let db = Lib.initDB('EventQueue', {events: 'title, date, time'});
 	
+	let events = [];
 	let network = "online";
+	let msgToken = null;
 	let syncRegistered = false;
 	
 	//to use local endpoints un comment this and run "npm run local-server"
@@ -62,18 +62,13 @@
 		console.log("App is offline");
 		network = "offline";
 		document.getElementById("status").innerHTML = "(Offline)";
-		//if we have no data show offline msg otherwise do nothing
-		if(events.length === 0) {
-			document.getElementById("dynamic").innerHTML = "";
-			document.getElementById("dynamic").innerHTML = "<h1>App Is Offline </h1>";
-		}
+		
 	};
 	
 	let onlineMode = ()=>{
 		console.log("App is online");
 		document.getElementById("status").innerHTML = "(Online)";
 		network = "online";
-		loadDisplayEvents();
 	};
 	
 	let loadDisplayEvents = async () => {
@@ -91,10 +86,17 @@
 	
 	try {
 		//should work if the app is visited from the browser
-		onlineMode();
+		loadDisplayEvents();
+		navigator.onLine ? onlineMode() : offlineMode();
+		
 	}catch(e){
-		//The app is probably opened from homescreen but device is offline
+		//The app is opened offline but there's no data in cache
 		console.log("Error maybe we offline", e);
+		//if we have no data show offline msg otherwise do nothing
+		if(events.length === 0) {
+			document.getElementById("dynamic").innerHTML = "";
+			document.getElementById("dynamic").innerHTML = "<h1>App Is Offline </h1>";
+		}
 	}finally{
 		//choose how the app behaves depending on network status
 		Lib.monitorNetworkState(onlineMode, offlineMode);
@@ -121,15 +123,17 @@
 		}
 	};
 	
-	//Enable Dialog
+	//Add event dialog
 	let eventDialog = new Dialog(".show-modal", async newevent=>{
 		if(network === "offline"){
+			
 			console.log("app is offline queueing event");
 			alert("App is offline, we'll notify you when the event is created");
 			let reg = await navigator.serviceWorker.ready;
 			db.events.add(newevent);
 			reg.sync.register('EventSync');
 		}else{
+			
 			await Lib.ajaxPost(eventEndpoint, newevent);
 			loadDisplayEvents();
 		}
@@ -138,8 +142,9 @@
 	eventDialog.enableListeners();
 	
 	//registers the service worker
+	//all code to be run after registration goes here
+	//such as linking firebase messaging to sw and handling notifications
 	registerSW(async reg=>{
-		//all code to be run when service worker is registered goes here
 		
 		messaging.useServiceWorker(reg);
 		
@@ -153,8 +158,8 @@
 			document.querySelector('#notifications').MaterialSwitch.on();
 		}
 		// console.log("notifications enabled: ", msgToken !== null, msgToken);
-		
 	})
+	
 }// keeps everything out of the global scope
 
 
