@@ -1,13 +1,17 @@
 importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+importScripts("key.js","lib/firebase.js","lib/dexie.js","lib/lib.js");
 
+firebase.initializeApp(config);
+
+const messaging = firebase.messaging();
 const workboxSW = new WorkboxSW({clientsClaim: true});
-
+const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
 
 workboxSW.precache([]);
 
 //caches an api request made by app
 workboxSW.router.registerRoute(
-	'https://snickdx.me:3001/events',
+	eventEndpoint,
 	workboxSW.strategies.cacheFirst({
 		cacheName:"eventsCache"
 	})
@@ -23,5 +27,40 @@ workboxSW.router.registerRoute(/\.(?:png|gif|jpg)$/,
 	})
 );
 
+self.addEventListener('sync', function(event) {
+	event.waitUntil(new Promise(async (resolve, reject)=>{
+		try{
+			let db = Lib.initDB('EventQueue', {events: 'title, date, time'});
+			
+			await db.events
+				.each (async function (event) {
+					Lib.fetchPost(eventEndpoint, event);
+				}).then(()=>{
+					console.log("Queued Events Sent!");
+					resolve(db.events.clear());
+					self.registration.showNotification("Event Success", {
+						body: "Your event was sent successfully in the background!",
+						icon: "images/android-desktop.png",
+						badge: "images/cal.png"
+					});
+				});
+		}catch(e){
+			reject(e)
+		}
+	}));
+	
+});
 
-
+self.addEventListener('push', function(event) {
+	var title = 'Yay a message.';
+	var body = 'We have received a push message.';
+	var icon = 'images/android-desktop.png';
+	var tag = 'simple-push-example-tag';
+	event.waitUntil(
+		self.registration.showNotification(title, {
+			body: body,
+			icon: icon,
+			tag: tag
+		})
+	);
+});

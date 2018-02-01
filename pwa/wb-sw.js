@@ -1,7 +1,11 @@
 importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+importScripts("key.js","lib/firebase.js","lib/dexie.js","lib/lib.js");
 
+firebase.initializeApp(config);
+
+const messaging = firebase.messaging();
 const workboxSW = new WorkboxSW({clientsClaim: true});
-
+const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
 
 workboxSW.precache([
   {
@@ -70,7 +74,7 @@ workboxSW.precache([
   },
   {
     "url": "main.js",
-    "revision": "8db588e3d8a889252bfc71b4746facd6"
+    "revision": "362a6cb7333583222af8e061e58729dd"
   },
   {
     "url": "manifest.json",
@@ -82,7 +86,7 @@ workboxSW.precache([
   },
   {
     "url": "sw-src.js",
-    "revision": "908e69cd96b057fd038636d7c723a3b6"
+    "revision": "fa1df1195d60599cbea8442726b59ace"
   },
   {
     "url": "sw.js",
@@ -90,19 +94,11 @@ workboxSW.precache([
   },
   {
     "url": "wb-sw.js",
-    "revision": "0fbf14656883826a4f8111cdef06a4db"
+    "revision": "a650160bd7dddd9ca66dbf92db89803e"
   },
   {
     "url": "workbox-sw.dev.v2.1.2.js",
     "revision": "acb8524aabe8c4222c32aed66f0f012a"
-  },
-  {
-    "url": "workbox-sw.prod.v2.1.0.js",
-    "revision": "e5f207838d7fd9c81835d5705a73cfa2"
-  },
-  {
-    "url": "workbox-sw.prod.v2.1.0.js.map",
-    "revision": "6fc68cbf40e4e2f38d2889fdaf5bc58a"
   },
   {
     "url": "workbox-sw.prod.v2.1.2.js",
@@ -116,7 +112,7 @@ workboxSW.precache([
 
 //caches an api request made by app
 workboxSW.router.registerRoute(
-	'https://snickdx.me:3001/events',
+	eventEndpoint,
 	workboxSW.strategies.cacheFirst({
 		cacheName:"eventsCache"
 	})
@@ -132,5 +128,28 @@ workboxSW.router.registerRoute(/\.(?:png|gif|jpg)$/,
 	})
 );
 
-
-
+self.addEventListener('sync', function(event) {
+	event.waitUntil(new Promise(async (resolve, reject)=>{
+		try{
+			let db = Lib.initDB('EventQueue', {events: 'title, date, time'});
+			
+			await db.events
+				.each (async function (event) {
+					Lib.fetchPost(eventEndpoint, event);
+				}).then(()=>{
+					console.log("Queued Events Sent!");
+					resolve(db.events.clear());
+					self.registration.showNotification("Event Success", {
+						body: "Your event was sent successfully in the background!",
+						icon: "images/android-desktop.png",
+						badge: "images/cal.png"
+					});
+				});
+			
+			
+		}catch(e){
+			reject(e)
+		}
+	}));
+	
+});

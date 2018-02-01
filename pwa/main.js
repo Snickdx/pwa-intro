@@ -18,8 +18,8 @@
         </div>
     `;
 	
-	const swFile = 'wb-sw.js'; //workbox cli service worker : (npm run wb-buld)
-	// const swFile = 'service-worker.js'; // sw-precache's service worker: (npm run build)
+	const swFile = 'sw.js'; //workbox cli service worker : (npm run wb-buld)
+
 	
 	let registerSW = async (readyFun) =>{
 		if ('serviceWorker' in navigator) {

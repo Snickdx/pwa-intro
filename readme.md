@@ -1,12 +1,12 @@
-# Jammers Cal PWA Starter
+# Jammers Cal PWA Starter Using SW Workbox
 
 ## Preview
 ![alt text](report.png)
 
-## Features (Using Sw-Precache)
+## Features
 1. Add to homescreen
-2. Pre caching resource files with sw-precache (Splash screens display mode not working with workbox)
-3. Runtime Caching with sw-precache/sw-toolbox to cache events
+2. Pre caching resource files to run offline
+3. Runtime Caching of events events & images
 4. Background Sync - allows adding new events while offline, used dixie for indexed db storage,
 5. Push notifications with fcm, notifies the user when event is send at background sync.
 
@@ -21,7 +21,7 @@
 2. run ```$ npm install ```
 
 ## Running
-1. Add firebase config to key.js
+1. Add firebase config to a variable named 'config' and save as key.js
 2. run ```$ npm run build ```
 3. then run ```$ npm run start```
 

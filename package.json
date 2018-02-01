@@ -4,22 +4,19 @@
 	"description": "",
 	"main": "src/index.html",
 	"scripts": {
-		"wb-build": "workbox-cli inject:manifest",
-		"build": "gulp generate-service-worker",
+		"build": "workbox-cli inject:manifest",
 		"local-server": "json-server --watch api/db.json --port 8081",
 		"start": "live-server --open=pwa"
 	},
 	"author": "Snickdx",
 	"license": "ISC",
 	"devDependencies": {
-		"gulp": "^3.9.1",
 		"json-server": "^0.12.1",
 		"live-server": "^1.2.0",
 		"workbox-build": "^2.1.2",
 		"workbox-runtime-caching": "^2.0.3"
 	},
 	"dependencies": {
-		"path": "^0.12.7",
-		"sw-precache": "^5.2.0"
+		"path": "^0.12.7"
 	}
 }
