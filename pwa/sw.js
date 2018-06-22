@@ -1,4 +1,4 @@
-importScripts('/node_modules/workbox-sw/build/importScripts/workbox-sw.dev.v2.1.2.js');
+importScripts('workbox-sw.prod.v2.1.2.js');
 importScripts("key.js","lib/firebase.js","lib/dexie.js","lib/lib.js");
 
 firebase.initializeApp(config);
@@ -74,7 +74,7 @@ workboxSW.precache([
   },
   {
     "url": "main.js",
-    "revision": "1fcc53af4817d1d407503cceb186b356"
+    "revision": "5f93b2d0db00c68d037f349c653877aa"
   },
   {
     "url": "manifest.json",
@@ -82,11 +82,11 @@ workboxSW.precache([
   },
   {
     "url": "sw-src.js",
-    "revision": "a598344c4b8dca10f8a62a79a772f792"
+    "revision": "ded2899335ad499c3c072b4bbd0560f7"
   },
   {
     "url": "sw.js",
-    "revision": "3443a3a7ba942bc02fbdedcd6acf83e9"
+    "revision": "7ffc251112de89e0ace21e4f47d2aab6"
   },
   {
     "url": "wb-sw.js",

@@ -15,6 +15,9 @@
               \${this.time}
             </h4>
           </div>
+			<button value="\${this.title}" class="share-btn mdl-button mdl-js-button mdl-button--primary">
+			  Share
+			</button>
         </div>
     `;
 	
@@ -54,8 +57,8 @@
 	// const eventEndpoint = "http://localhost:8081/events";
 	// const eventEndpoint = "http://localhost:8081/tokens";
 	
-	const tokenEndpoint = "https://snickdx.me:3001/tokens";
-	const eventEndpoint = "https://snickdx.me:3001/events";
+	const tokenEndpoint = "https://snickdx.me:3002/tokens";
+	const eventEndpoint = "https://snickdx.me:3002/events";
 	
 	//encapsulate different behaviours depending on the network situation
 	let offlineMode = () => {
@@ -89,7 +92,8 @@
 		loadDisplayEvents();
 		navigator.onLine ? onlineMode() : offlineMode();
 		
-	}catch(e){
+	}
+	catch(e){
 		//The app is opened offline but there's no data in cache
 		console.log("Error maybe we offline", e);
 		//if we have no data show offline msg otherwise do nothing
@@ -97,7 +101,8 @@
 			document.getElementById("dynamic").innerHTML = "";
 			document.getElementById("dynamic").innerHTML = "<h1>App Is Offline </h1>";
 		}
-	}finally{
+	}
+	finally{
 		//choose how the app behaves depending on network status
 		Lib.monitorNetworkState(onlineMode, offlineMode);
 	}
