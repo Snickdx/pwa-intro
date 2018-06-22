@@ -1,13 +1,11 @@
-importScripts('workbox-sw.prod.v2.1.2.js');
-importScripts("key.js","lib/firebase.js","lib/dexie.js","lib/lib.js");
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js');
+importScripts("lib/firebase.js", "key.js");//make your own key.js file and define a config variable containing your firebase config
 
-firebase.initializeApp(config);
+firebase.initializeApp(config);//config object defined by key.js
+firebase.messaging();
+const eventEndpoint = "https://snickdx.me:3002/events";
 
-const messaging = firebase.messaging();
-const workboxSW = new WorkboxSW({clientsClaim: true});
-const eventEndpoint = "https://pwa-snickdx.c9users.io:8081/events";
-
-workboxSW.precache([
+workbox.precaching.precacheAndRoute([
   {
     "url": "dialog.js",
     "revision": "a91890c984b1692bd45ec1b56e2b4c2d"
@@ -34,7 +32,7 @@ workboxSW.precache([
   },
   {
     "url": "index.html",
-    "revision": "0bd7ce685d815b07a5315f78307fac29"
+    "revision": "55d5a08a8525bf7d48110f9e562e1d48"
   },
   {
     "url": "key.js",
@@ -74,90 +72,28 @@ workboxSW.precache([
   },
   {
     "url": "main.js",
-    "revision": "5f93b2d0db00c68d037f349c653877aa"
+    "revision": "40ded513d2edf3214266c47d5d3a129e"
   },
   {
     "url": "manifest.json",
-    "revision": "e62867a022bdd6be28e928ad144f490c"
+    "revision": "eb294c245c4d41cf28c584c92aae3a4e"
   },
   {
     "url": "sw-src.js",
-    "revision": "ded2899335ad499c3c072b4bbd0560f7"
-  },
-  {
-    "url": "sw.js",
-    "revision": "7ffc251112de89e0ace21e4f47d2aab6"
-  },
-  {
-    "url": "wb-sw.js",
-    "revision": "fef38cfbfd610fde568cb8ed9f5668fc"
-  },
-  {
-    "url": "workbox-sw.dev.v2.1.2.js",
-    "revision": "acb8524aabe8c4222c32aed66f0f012a"
-  },
-  {
-    "url": "workbox-sw.prod.v2.1.2.js",
-    "revision": "685d1ceb6b9a9f94aacf71d6aeef8b51"
-  },
-  {
-    "url": "workbox-sw.prod.v2.1.2.js.map",
-    "revision": "8e170beaf8b748367396e6039c808c74"
+    "revision": "07ee45382b5e0acb31fdf964c829b7bd"
   }
 ]);
 
-//caches an api request made by app
-workboxSW.router.registerRoute(
-	eventEndpoint,
-	workboxSW.strategies.cacheFirst({
-		cacheName:"eventsCache"
+workbox.routing.registerRoute(
+	new RegExp(eventEndpoint),
+	workbox.strategies.staleWhileRevalidate({
+		cacheName:"events-cache",
+		plugins: [
+			new workbox.expiration.Plugin({
+				maxAgeSeconds: 7 * 24 * 60 * 60,
+				maxEntries: 10,
+				cacheableResponse: {statuses: [0, 200]}
+			})
+		]
 	})
 );
-
-//caches any images that is loaded by the app
-workboxSW.router.registerRoute(/\.(?:png|gif|jpg)$/,
-	workboxSW.strategies.cacheFirst({
-		cacheName: 'images',
-		cacheExpiration: {
-			maxEntries: 50
-		}
-	})
-);
-
-self.addEventListener('sync', function(event) {
-	event.waitUntil(new Promise(async (resolve, reject)=>{
-		try{
-			let db = Lib.initDB('EventQueue', {events: 'title, date, time'});
-			
-			await db.events
-				.each (async function (event) {
-					Lib.fetchPost(eventEndpoint, event);
-				}).then(()=>{
-					console.log("Queued Events Sent!");
-					resolve(db.events.clear());
-					self.registration.showNotification("Event Success", {
-						body: "Your event was sent successfully in the background!",
-						icon: "images/android-desktop.png",
-						badge: "images/cal.png"
-					});
-				});
-		}catch(e){
-			reject(e)
-		}
-	}));
-	
-});
-
-self.addEventListener('push', function(event) {
-	var title = 'Yay a message.';
-	var body = 'We have received a push message.';
-	var icon = 'images/android-desktop.png';
-	var tag = 'simple-push-example-tag';
-	event.waitUntil(
-		self.registration.showNotification(title, {
-			body: body,
-			icon: icon,
-			tag: tag
-		})
-	);
-});

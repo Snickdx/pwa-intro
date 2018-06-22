@@ -4,17 +4,16 @@
 	"description": "",
 	"main": "src/index.html",
 	"scripts": {
-		"build": "workbox-cli inject:manifest",
+		"build": "workbox injectManifest",
 		"local-server": "json-server --watch api/db.json --port 8081",
-		"start": "live-server --open=pwa"
+		"start": "firebase serve",
+		"deploy": "firebase deploy --only hosting"
 	},
 	"author": "Snickdx",
 	"license": "ISC",
 	"devDependencies": {
 		"json-server": "^0.12.1",
-		"live-server": "^1.2.0",
-		"workbox-build": "^2.1.2",
-		"workbox-runtime-caching": "^2.0.3"
+		"workbox-cli": "^3.3.0"
 	},
 	"dependencies": {
 		"path": "^0.12.7"
