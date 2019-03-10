@@ -1,5 +1,5 @@
 (async ()=>{
-	
+
 let cardTemplate  = (event)=>{
 	return `
         <div class="mdl-cell mdl-cell--4-col  mdl-cell--12-col-phone md-cell--6-tablet demo-card-event mdl-card mdl-shadow--2dp">\
@@ -12,15 +12,13 @@ let cardTemplate  = (event)=>{
           </div>
         </div>
     `;
-}
-	
+};
 
-	
+
+
 let events = [];
 
-// const server = "https://jcal-snickdx.c9users.io:8081";
 const server = "http://localhost:8081";
-
 
 let loadDisplayEvents = async () => {
 	

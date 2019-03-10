@@ -15,13 +15,15 @@ dialog.querySelector('.close').addEventListener('click', () => {
 
 dialog.querySelector('.add-event').addEventListener('click', async ()=>{
 	
+	const eventEndpoint = "http://localhost:8081/events";
+	
 	let newevent = {
 		title: document.getElementById("title").value,
 		date: document.getElementById("date").value,
 		time: document.getElementById("time").value
 	};
 	
-	if(newevent.title == "" || newevent.date == "" && newevent.time == ""){
+	if(newevent.title === "" || newevent.date === "" && newevent.time === ""){
 		alert("Fields cant be blank!");
 	}else{
 		try{
