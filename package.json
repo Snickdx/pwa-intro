@@ -6,9 +6,10 @@
 	"scripts": {
 		"build": "workbox injectManifest",
 		"local-server": "json-server --watch api/db.json --port 8081",
-		"serve-app": "live-server --cors --open=app --port=8080 --host=0.0.0.0",
-		"serve-pwa":"live-server --cors --open=pwa --port=8080 --host=0.0.0.0",
-		"start":"npm run local-server | npm run serve-app"
+		"serve-app": "cd app & live-server --cors --port=8080 --host=0.0.0.0",
+		"serve-pwa": "cd pwa & live-server --cors --port=8080 --host=0.0.0.0",
+		"start": "npm run local-server | npm run serve-app",
+		"start-pwa": "npm run local-server | npm run serve-pwa"
 	},
 	"author": "Snickdx",
 	"license": "ISC",

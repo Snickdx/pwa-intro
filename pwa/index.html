@@ -107,7 +107,13 @@
     </div>
 </dialog>
 
-
+<script>
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', function() {
+			navigator.serviceWorker.register('/sw.js');
+		});
+	}
+</script>
 <script src="lib/lib.js"></script>
 <script src="main.js"></script>
 <script src="dialog.js"></script>
