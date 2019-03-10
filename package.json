@@ -6,13 +6,15 @@
 	"scripts": {
 		"build": "workbox injectManifest",
 		"local-server": "json-server --watch api/db.json --port 8081",
-		"start": "firebase serve",
-		"deploy": "firebase deploy --only hosting"
+		"serve-app": "live-server --cors --open=app --port=8080 --host=0.0.0.0",
+		"serve-pwa":"live-server --cors --open=pwa --port=8080 --host=0.0.0.0",
+		"start":"npm run local-server && npm run serve-app"
 	},
 	"author": "Snickdx",
 	"license": "ISC",
 	"devDependencies": {
 		"json-server": "^0.12.1",
+		"live-server": "^1.2.1",
 		"workbox-cli": "^3.3.0"
 	},
 	"dependencies": {

@@ -1,10 +1,5 @@
  class Lib{
     
-    //template binding, templating a template so we can reuse it
-    static makeHTML(data, template){ 
-        return new Function(`return \`${template}\`;`).call(data);
-    }
-    
     //ajax wrapped in a promise
     static ajaxGet(url){
       return new Promise((resolve, reject) => {
