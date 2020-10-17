@@ -18,7 +18,7 @@ let cardTemplate  = (event)=>{
 
 let events = [];
 
-const server = "http://localhost:8081";
+const server = "https://8081-d1fb502a-6da6-469c-b161-ac95d0872bc6.ws-us02.gitpod.io";
 
 let loadDisplayEvents = async () => {
 	

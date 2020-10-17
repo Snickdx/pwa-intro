@@ -6,8 +6,8 @@
 	"scripts": {
 		"build": "workbox injectManifest",
 		"local-server": "json-server --watch api/db.json --port 8081",
-		"serve-app": "cd app & live-server --cors --port=8080 --host=0.0.0.0",
-		"serve-pwa": "cd pwa & live-server --cors --port=8080 --host=0.0.0.0",
+		"serve-app": "serve app -C -l 8080",
+		"serve-pwa": "serve pwa -C -l 8080",
 		"start": "npm run local-server | npm run serve-app",
 		"start-pwa": "npm run local-server | npm run serve-pwa"
 	},
@@ -15,7 +15,7 @@
 	"license": "ISC",
 	"devDependencies": {
 		"json-server": "^0.12.1",
-		"live-server": "^1.2.1",
+		"serve": "^11.3.2",
 		"workbox-cli": "^3.3.0"
 	},
 	"dependencies": {
